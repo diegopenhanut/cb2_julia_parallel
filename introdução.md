@@ -20,6 +20,39 @@ Processamento
 - Anotações
 
 
+![Illummina Vídeo](www.youtube.com/watch?v=womKfikWlxM)
+
+Vídeo da Ilumina mostrando como se dá o sequenciamento
+
+
+VCF
+===
+
+![vcf](figuras/vcf.png)
+Exemplo de VCF
+
+
+```
+##FORMAT=<ID=GT, Number=1, Type=String, Description=”Genotype”>
+##FORMAT=<ID=GQ, Number=1, Type=Integer, Description=”Genotype Quality”>
+##FORMAT=<ID=DP, Number=1, Type=Interger, Description=”Read Depth”
+```
+| Campo	| ID	| Number	| Type	| Description |
+|------:|:--:|:--------:|:-----:|:------------|
+| Format	| GT | 1	| String | Genotype |
+| Format	| GQ |	1	| Integer	| Genotype Quality |
+| Format	| DP	| 1	| Integer	| Read Depth |
+```
+##contig=<ID=20,length=62435964,assembly=B36,
+md5=f126cdf8a6e0c7f379d618ff66beb2da,
+species="Homo sapiens",taxonomy=x>
+```
+| Campo |	ID	| length |	assembly |	md5 |	species |	taxonomy |
+|------:|:---:|:------:|:---------:|:----:|:-------:|:---------|
+| Contig | 20	| 62435964 |	B36 |	f126cdf  8a6e0c7f  379d618ff  66beb2da |	Homo Sapiens |	x |
+Fonte: http://samtools.github.io/hts-specs/VCFv4.2.pdf
+
+
 Dados externos
 ==============
 
@@ -42,6 +75,9 @@ Linked Data
 
 Open Linked Data
 ================
+
+![As cinco estrelas do open data](figuras/fig1.Escada5estrelas.png)
+Figura 1. As cinco estrelas do open data
 
 
 
@@ -85,11 +121,10 @@ XML
 xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
 xmlns:dc="http://purl.org/dc/elements/1.1/">
   <rdf:Description rdf:about="http://en.wikipedia.org/wiki/Tony_Benn">
-  <dc:title>Tony Benn</dc:title>
-  <dc:publisher>Wikipedia<dc:publisher>
-</rdf:Description>
+    <dc:title>Tony Benn</dc:title>
+    <dc:publisher>Wikipedia<dc:publisher>
+  </rdf:Description>
 </rdf:RDF>
-
 ```
 
 
@@ -113,15 +148,16 @@ Formatos para RDF
 
 Turtle
 ==========================
-```
+
+```{xml}
 @prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
 @prefix dc: <http://purl.org/dc/elements/1.1/> .
 @prefix ex: <http://example.org/stuff/1.0/> .
 <http://www.w3.org/TR/rdf-syntax-grammar>
 dc:title "RDF/XML Syntax Specification (Revised)" ;
 ex:editor [
-ex:fullname "Dave Beckett";
-ex:homePage <http://purl.org/net/dajobe/>
+  ex:fullname "Dave Beckett";
+  ex:homePage <http://purl.org/net/dajobe/>
 ] .
 ```
 
@@ -142,6 +178,7 @@ _:bnode .
 _:bnode
 <http://example.org/stuff/1.0/fullname>
 "Dave Beckett" .
+
 _:bnode
 <http://example.org/stuff/1.0/homePage>
 <http://purl.org/net/dajobe/> .
@@ -151,7 +188,27 @@ _:bnode
 SPARQL
 ======
 
+###### Juju, o gato assustado, subiu ao telhado
+________________________________________
+Juju é um gato
+
+Juju é assustado
+
+Juju subiu ao telhado
+
+O gato subiu ao telhado (tripla inferida?)
+__________________________________________
+```
+SELECT ?para WHERE {:gato :subiu ?para}
+SELECT ?quem WHERE {?quem :subiu :telhado}
+SELECT ?oque WHERE {:gato ?oque :telhado}
+SELECT * WHERE {:juju a []}
+
+```
 
 
 Sparqlgraph
 ===========
+
+![Screeshot de parte da interface do sparqlgraph](figuras/fig2.sparqlgraph.png)
+Figura 2. Screenshot da parte da interface do sparqlgraph

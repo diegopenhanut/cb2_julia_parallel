@@ -6,6 +6,9 @@ Mapa Isomorfico
 ===============
 
 
+![pipeline](figuras/fig.4.mapa.png)
+Figura com mapa
+
 ### Notes:
 
 Substituir figura, usar algo em d3.js

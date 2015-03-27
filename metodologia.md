@@ -36,9 +36,6 @@ Softwares e Recursos Computacionais
 - Node.js Meteor
 
 
-Mostrar figuras com exemplos ou links
-=====================================
-
 
 Base para mapeamento e uso de Ids
 =================================
