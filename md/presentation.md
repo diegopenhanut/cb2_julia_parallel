@@ -9,7 +9,7 @@
 
 Julia Examples
 ==============
-```{julia}
+```julia
 using Gadfly
 using RDatasets
 bmiData=dataset ("datasets", "women")
