@@ -9,20 +9,30 @@
 
 Introduction
 ============
-Julia is a new-high level computer language built for technical computing with performance in mind. Julia processes can create tasks that utilize large computational resource, these can be ran using clusters. Clusters are a massive network of computers that can be viewed as a single system. To best harness the power of such machines, code is typically ran in parallel.
+Julia is a new-high level computer language built for technical computing with performance in mind. Julia processes can create tasks that utilize large computational resource, these can be ran using clusters. 
 
 
+Clusters are a massive network of computers that can be viewed as a single system. To best harness the power of such machines, code is typically ran in parallel.
 
 
-While clusters can be viewed as a single system, they required a way to manage processes and processors. One such tool is Grid Engine. Grid Engine is a program for executing batch jobs on linux clusters. The main idea is to provide a way to schedule big and small jobs and maintain the cluster in a optimal state.The cluster will use available memory and processors as parameters to determine in what order jobs run. The main objective of this discussion is to describe how one can use another other than Julia and the queuing system of Grid Engine to complete tasks, particularly int the field of bioinformatics.
+While clusters can be viewed as a single system, they required a way to manage processes and processors. One such tool is Grid Engine. 
+
+
+Grid Engine is a program for executing batch jobs on linux clusters. The main idea is to provide a way to schedule big and small jobs and maintain the cluster in a optimal state.The cluster will use available memory and processors as parameters to determine in what order jobs run. 
+
+
+The main objective of this discussion is to describe how one can use another other than Julia and the queuing system of Grid Engine to complete tasks, particularly int the field of bioinformatics.
+
 
 
 Different types of parallel processing
 ======================================
 
 
-the way julia works is
-======================
+
+The julia way
+=============
+
 
 
 Binary at 
@@ -30,6 +40,13 @@ Binary at
 ```
 /home/penhaeds/bin/julia-cb9bcae93a/bin/julia
 ```
+
+
+
+Online at
+=========
+[https://www.juliabox.org/](https://www.juliabox.org/)
+
 
 
 Basic Parallel Code
@@ -58,20 +75,44 @@ julia> fetch(s)
 dataframes
 ==========
 ```julia
-using(DataFrames)
-df = DataFrame(Origin = ["a","b","c","d","a","d"], 
-Target = ["j", "f", "g", "h", "i", "j"])
-df[:Target]
-p = randperm(length(df[:Target]))
-df[:Target]=df[:Target][p]
-df
+julia> using(DataFrames)
+julia> df = DataFrame(Origin = ["a","b","c","d","a","d"], 
+	Target = ["j", "f", "g", "h", "i", "j"])
+julia> df[:Target]
+julia> p = randperm(length(df[:Target]))
+julia> df[:Target]=df[:Target][p]
+julia> df
 ```
 
 
-let data and functions be knowed by processes
+```julia
+function randNdCol(mytable)
+	p=randperm(length(mytable[2]))
+	mytable[2]=mytable[2][p]
+	return mytable
+	end
+```
+
+
+```julia
+randNdCol(df)
+```
+
+
+
+Load data/functions to all processes
+====================================
+```julia
+julia> require("myfile")
+@everywhere id = myid()
+```
+
+
+
+data, functions and processes
 =============================================
 ```julia
-ClusterManagers.addprocs_sge(5)
+addprocs(5)
 @everywhere using(DataFrames)
 @everywhere df = DataFrame(Origin = ["a","b","c","d","a","d"], 
 Target = ["j", "f", "g", "h", "i", "j"])
@@ -86,25 +127,26 @@ fetch(newDf)
 
 
 ```julia
-ClusterManagers.addprocs_sge(5)
+addprocs(5)
 @everywhere using(DataFrames)
 @everywhere df = DataFrame(Origin = ["a","b","c","d","a","d"], 
 Target = ["j", "f", "g", "h", "i", "j"])
-
 @everywhere function randNdCol(mytable)
 	p=randperm(length(mytable[2]))
 	mytable[2]=mytable[2][p]
 	return mytable
 	end
 
-@parallel for i=1:5
-	print (randNdCol(df))
+newDf=[]
+for i in 1:10
+newDf[i] = @spawn randNdCol(df)
+fetch(newDf[i])
 end
 ```
 
 
 ```julia
-ClusterManagers.addprocs_sge(5)
+addprocs(5)
 
 @everywhere using(DataFrames)
 
@@ -121,15 +163,8 @@ Target = ["j", "f", "g", "h", "i", "j"])
 	print(randNdCol(df))
 end
 ```
-
-
-Load data/functions to all processes
-====================================
-```julia
-julia> require("myfile")
-@everywhere id = myid()
-```
-
+Note: this is a kind of mapping
+One could use (+) in the middle to add a reduce function
 
 
 Using ClusterManagers
@@ -157,6 +192,38 @@ workers. When there is only one process, process 1 is considered a
 worker.
 Otherwise, workers are considered to be all processes other than
 process 1
+
+
+The Diference now is 
+====================
+```Julia
+ClusterManagers.addprocs_sge(5)
+```
+instead of 
+```julia
+addprocs(5)
+```
+
+
+New code 
+========
+```julia
+ClusterManagers.addprocs_sge(5)
+@everywhere using(DataFrames)
+@everywhere df = DataFrame(Origin = ["a","b","c","d","a","d"], 
+Target = ["j", "f", "g", "h", "i", "j"])
+@everywhere function randNdCol(mytable)
+    p=randperm(length(mytable[2]))
+    mytable[2]=mytable[2][p]
+    return mytable
+    end
+
+newDf=[]
+for i in 1:10
+newDf[i] = @spawn randNdCol(df)
+fetch(newDf[i])
+end
+```
 
 
 
