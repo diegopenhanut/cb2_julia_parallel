@@ -4,6 +4,7 @@
 -----
 ###### Emanuel Diego S Penha
 ###### Research Scholar
+Note: Bom dia!
 
 
 
@@ -22,16 +23,7 @@ Grid Engine is a program for executing batch jobs on linux clusters. The main id
 
 
 The main objective of this discussion is to describe how one can use another other than Julia and the queuing system of Grid Engine to complete tasks, particularly int the field of bioinformatics.
-
-
-
-Different types of parallel processing
-======================================
-
-
-
-The julia way
-=============
+Note: You need to say that are different types of parallel processing, The julia way is one-way messages. But this is off topic. We are not talking about that today
 
 
 
@@ -40,12 +32,14 @@ Binary at
 ```
 /home/penhaeds/bin/julia-cb9bcae93a/bin/julia
 ```
+Note: Give time to people find your binary
 
 
 
 Online at
 =========
 [https://www.juliabox.org/](https://www.juliabox.org/)
+Note: Give time to people find the site and set up accounts
 
 
 
@@ -69,7 +63,8 @@ julia> fetch(s)
 2x2 Float64 Array:
  1.60401  1.50111
  1.17457  1.15741
-```
+ ```
+Note: Show IJulia and code running
 
 
 dataframes
@@ -83,6 +78,8 @@ julia> p = randperm(length(df[:Target]))
 julia> df[:Target]=df[:Target][p]
 julia> df
 ```
+Note: Explain what you are going to do. Randomization of a column in
+one dataframe. Talk about rewiring of networks emidio told.
 
 
 ```julia
@@ -92,11 +89,15 @@ function randNdCol(mytable)
 	return mytable
 	end
 ```
+Note: This is a function to reorder.
+Talk about the simgle thread, and possibilities to have a 
+distribuition of this data
 
 
 ```julia
 randNdCol(df)
 ```
+Note: This is a the calling of the function
 
 
 
@@ -106,7 +107,9 @@ Load data/functions to all processes
 julia> require("myfile")
 @everywhere id = myid()
 ```
-
+Note: talk about each process needs to have a copy or chunk of the data
+to work on.
+Maybe talk a little bit about macros.
 
 
 data, functions and processes
@@ -124,25 +127,8 @@ Target = ["j", "f", "g", "h", "i", "j"])
 newDf = @spawn randNdCol(df)
 fetch(newDf)
 ```
-
-
-```julia
-addprocs(5)
-@everywhere using(DataFrames)
-@everywhere df = DataFrame(Origin = ["a","b","c","d","a","d"], 
-Target = ["j", "f", "g", "h", "i", "j"])
-@everywhere function randNdCol(mytable)
-	p=randperm(length(mytable[2]))
-	mytable[2]=mytable[2][p]
-	return mytable
-	end
-
-newDf=[]
-for i in 1:10
-newDf[i] = @spawn randNdCol(df)
-fetch(newDf[i])
-end
-```
+Note: One can use a loop to dispatch the jobs,
+parallelism is limited here
 
 
 ```julia
@@ -243,7 +229,7 @@ workers()
 
 
 
-Remove workers
+Remove workers from julia
 ==============
 ```julia
 rmprocs(workers());
@@ -252,6 +238,18 @@ Note: As malay said before, do not install if you don't know how to unistall
 
 
 
+Remove workers from sge
+==============
+```shell
+qdel -u username
+```
+Note: Remember that the jobs will die if not used.
+This happened to me.
+
+
+
+Nodes
+=====
 ```julia
 julia> @parallel for i=1:5
        run(`hostname`)
@@ -268,14 +266,8 @@ this will be hidden by default
 
 
 
-
-```julia
-workers()
-rmprocs(workers());
-```
-
-
-
+Reduce Example
+==============
 ```julia
 nheads = @parallel (+) for i=1:200000000
 randbool()
@@ -284,13 +276,10 @@ end
 
 
 
-```julia
-tic()
-numIter = 200000000
-in_circle = @parallel (+) for i = 1:numIter
-  int(sum(rand(2) .^2) < 1)
-end
-toc()
-print(4 * in_circle / numIter)
-```
+### Thank you!
+-----
+penhaeds@uab.edu
+
+
+
 
