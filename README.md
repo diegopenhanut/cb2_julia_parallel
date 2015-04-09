@@ -1,5 +1,6 @@
 # CB2 Journal Club Presentation
-## Parallel processing in Julia using Grid Engine
+## [Parallel processing in Julia using Grid Engine] (http://goo.gl/tkSwLg)
+
 Presentation to cb2 journal club about julia and grid engine
 
 Ipython/IJulia notebooks:   
