@@ -1,5 +1,5 @@
 # CB2 Journal Club Presentation
-## Parallel processing in Julia using Grid Engine: [http://diegopenhanut.github.io/cb2_julia_parallel/#/](http://diegopenhanut.github.io/cb2_julia_parallel/#/)
+## [Parallel processing in Julia using Grid Engine](http://diegopenhanut.github.io/cb2_julia_parallel/#/)
 
 Presentation to cb2 journal club about julia and grid engine
 
