@@ -46,7 +46,7 @@ Note: Give time to people find the site and set up accounts
 
 
 
-Basic Parallel Code
+Basic Communication
 ===================
 ```julia
 $ ./julia -p 2
@@ -67,6 +67,7 @@ julia> fetch(s)
  1.60401  1.50111
  1.17457  1.15741
  ```
+ [Click here for a more complete example](ipython_ijulia_examples/cb2_basic_parallel_communication.html)
 Note: Show IJulia and code running
 
 
@@ -151,6 +152,7 @@ Target = ["j", "f", "g", "h", "i", "j"])
 M = [df for i=1:100]
 pmap(randNdCol, M)
 ```
+[take a look at the output](ipython_ijulia_examples/cb2_julia_parallel_dataframe.html)
 
 
 
