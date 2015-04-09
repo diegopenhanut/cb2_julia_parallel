@@ -148,12 +148,10 @@ Target = ["j", "f", "g", "h", "i", "j"])
 	return mytable
 	end
 
-@parallel for i=1:10
-	print(randNdCol(df))
-end
+M = [df for i=1:100]
+pmap(randNdCol, M)
 ```
-Note: this is a kind of mapping
-One could use (+) in the middle to add a reduce function
+
 
 
 Using ClusterManagers
@@ -208,10 +206,9 @@ Target = ["j", "f", "g", "h", "i", "j"])
     end
 
 newDf=[]
-for i in 1:10
-newDf[i] = @spawn randNdCol(df)
-fetch(newDf[i])
-end
+
+M = [df for i=1:10]
+pmap(randNdCol, M)
 ```
 
 
@@ -276,6 +273,8 @@ nheads = @parallel (+) for i=1:200000000
 randbool()
 end
 ```
+Note: this is a kind of mapping
+One uses (+) in the middle to add a reduce function
 
 
 
